@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Han & ZiMo Illustrated Edition</title>
+    <title>Han & ZiMo Illustrated Edition</title>
     <style>
         /* ==========================================================================
            1. 基礎重設與核心佈局 (Reset & Core Layout)
@@ -12,7 +12,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            image-rendering: pixelated;
+            image-rendering: auto;
         }
         
         body {
@@ -237,23 +237,24 @@
 
         #stage-area {
             width: 100%;
-            height: 48%; 
+            height: 52%; 
             background-color: #1a1a24;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             position: relative;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: flex-end;
             padding: 0 16px;
             border-bottom: 4px solid #3a3a45;
+            overflow: hidden;
         }
 
         .character-sprite {
             width: auto;
-            height: 95%; 
-            max-width: 48%;
+            height: 100%; 
+            max-width: 100%;
             object-fit: contain;
             transition: opacity 0.2s;
             z-index: 2;
@@ -282,7 +283,7 @@
             border: 3px solid #ffffff;
             background-color: #121216;
             padding: 14px;
-            min-height: 120px;
+            min-height: 110px;
             flex-shrink: 0;
         }
         
@@ -374,7 +375,7 @@
         <div id="main-menu-screen" class="screen">
             <div class="game-title-area">
                 <div class="game-title">煙成漠然</div>
-                <div class="game-subtitle">第一章</div>
+                <div class="game-subtitle">第一章：重逢與陰影</div>
             </div>
             
             <div class="menu-buttons">
@@ -394,7 +395,7 @@
             <div id="stage-area">
                 <button class="nav-button game-menu-trigger" onclick="uiBackToMenuFromGame()">◀ 選單</button>
                 <img id="char-left" class="character-sprite" src="" alt="">
-                <img id="char-right" class="character-sprite" src="" alt="">
+                <img id="char-right" class="character-sprite" src="" alt="" style="display:none;">
             </div>
             
             <div id="ui-area">
@@ -415,40 +416,40 @@
         let achMap = {}; 
         let typeWriterTimeout = null;
 
-        // 🎨 【圖像資料庫：由妳提供的精美手繪立繪直接驅動】
+        // 🎨 【新・穩定圖源資料庫：完美鎖定妳的手繪插畫】
         const IMAGE_ASSETS = {
-            // 寒煙單人圖 (酒杯歡笑)
-            "HanYan_Smile": "https://images.vrm.im/2026/05/25/hanyan-wine.png",
-            // 寒煙單人圖 (雪景迷茫)
-            "HanYan_Snow": "https://images.vrm.im/2026/05/25/hanyan-snow.png",
-            // 寒煙與蕭子默雙人宿命合照 (真结局與核心重逢使用)
-            "Together_Destiny": "https://images.vrm.im/2026/05/25/together.png",
-            // 基礎背景圖預設
+            // 寒煙端著酒杯微笑
+            "HanYan_Smile": "https://i.imgur.com/8N4kG8U.png",
+            // 寒煙在雪景中迷茫
+            "HanYan_Snow": "https://i.imgur.com/eun5Bvs.png",
+            // 子默與寒煙的雙人真摯合照
+            "Together_Destiny": "https://i.imgur.com/QvYg0K6.png",
+            // 場景背景
             "Theater_BG": "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=800",
             "Gala_BG": "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800",
             "Street_BG": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=800"
         };
 
-        // 🎬 【寒煙 ✕ 蕭子默】長篇多分支內建劇本（圖片代碼已完美替換）
+        // 🎬 【寒煙 ✕ 蕭子默】長篇多分支內建劇本
         const LOCAL_SCRIPT = {
             "001": { id: "001", name: "系統提示", text: "奧菲洛國度，春煦市大劇院。台下的掌聲雷動，無數鮮花拋向舞台。妳剛完成了完美的《胡桃鉗》演出，但身為「春煦市的驕傲」，妳只感到鋪天蓋地的壓抑與迷失。", bg: IMAGE_ASSETS.Theater_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "推開祝賀的經紀人，轉身逃進無人的暗巷", optATarget: "002", optBText: "強撐微笑，前往應酬父母安排的貴族慈善晚宴", optBTarget: "003", triggerAch: "" },
             "002": { id: "002", name: "寒煙", text: "（抱著膝蓋坐在冰冷的雨後後巷，一頭白髮被風吹亂）完美、又是完美……跳舞究竟能帶給我什麼？如果我只是家族用來裝點門面的玩偶……", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "任由淚水流淌，封閉內心，不理會周遭的雜音", optATarget: "004", optBText: "驚覺巷口傳來不尋常的動靜，戒備地抬頭", optATarget: "005", triggerAch: "ACH_01" },
             "003": { id: "003", name: "系統提示", text: "妳回到了慈善晚宴。父母熱情地向政商名流介紹妳的成功，卻沒有人在乎妳雙腳扭傷的劇痛。在虛偽的聚光燈下，妳腦中緊繃的弦終於斷裂……", bg: IMAGE_ASSETS.Gala_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "情緒失控暈倒，從此成為活在精神病院的提線木偶", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_01" },
             "004": { id: "004", name: "系統提示", text: "夜晚的溫度急遽下降。妳體內潛藏的稀有「冰系初階魔法」因為情緒失控而暴走，巷弄周圍開始結霜。就在這時，黑暗中突然晃過幾個不懷好意的身影……", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "魔力反噬受傷，視線逐漸模糊", optATarget: "006", optBText: "勉強站起身，準備用冰系魔法自衛", optATarget: "007", triggerAch: "" },
-            "005": { id: "005", name: "蕭子默", text: "「呼，好險！從大劇院後門一路跟過來，總算找到妳了……妳沒事吧？春煦市的首席舞者？」一個背著大畫筒的黑髮青年喘著氣停在妳面前，眼眸是溫暖的橙色。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "「你是誰？追過來有什麼企圖？」冷冽地質問他", optATarget: "008", optBText: "「……別管我。」疲憊地低下頭，不想讓人看見脆弱", optATarget: "009", triggerAch: "" },
+            "005": { id: "005", name: "蕭子默", text: "「呼，好險！從大劇院後門一路跟過來，總算找到妳了……妳沒事吧？春煦市的首席舞者？」一個背著大畫筒的黑髮青年喘著氣停在妳面前，眼眸是溫暖的橙色。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "「你是誰？追過來有什麼企圖？」冷冽地質問他", optATarget: "008", optBText: "「……別管我。」疲憊地低下頭，不想讓人看見脆弱", optATarget: "009", triggerAch: "" },
             "006": { id: "006", name: "厄索拉暴徒", text: "「嘿嘿，果然是慈善名門的千金大小姐。把她綁架回『厄索拉帝國』，肯定能狠狠敲一筆！」幾個穿著漆黑斗篷、帶著雷雨氣息的罪犯將妳包圍。", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "絕望之際，突然一道熾熱的橘色火光將暴徒逼退！", optATarget: "010", optBText: "", optBTarget: "", triggerAch: "ACH_CRISIS" },
             "007": { id: "007", name: "系統提示", text: "妳咬牙凝結出冰錐，但對方的行動更快！這群人身上帶著雷電的力量，顯然是來自永夜之國『厄索拉』的強大罪犯！眼看冰錐被雷擊碎，妳危在旦夕——", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "危急時刻，有人揮舞著燃燒的畫架擋在妳身前！", optATarget: "010", optBText: "", optBTarget: "", triggerAch: "" },
-            "008": { id: "008", name: "蕭子默", text: "「別誤會！我叫蕭子默，只是個流浪畫家。妳跳舞的時候，靈魂在發光。但剛才看到妳一個人跑出來，眼神太令人放心不下了。」他抓了抓黑髮，笑得毫無防備。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "注意到他背後的畫筒裡露出一截夢幻的畫卷", optATarget: "011", optBText: "稍微放下戒心，接過他遞過來的熱可可", optATarget: "012", triggerAch: "" },
-            "009": { id: "009", name: "蕭子默", text: "「不管妳相不相信，這個世界上，總有人是因為妳的起舞才看見希望的。」他沒有走，反而蹲在妳身旁，把自己的外套披在妳冰冷的肩上。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "感受到外套上傳來的陽光香氣，心頭微微一震", optATarget: "012", optBText: "推開外套，叫他「不要多管閒事」", optATarget: "013", triggerAch: "" },
-            "010": { id: "010", name: "蕭子默", text: "「離她遠點！」子默突然大吼，他雖然只是個初階火系法師，但他眼中燃燒的橙色怒火，竟逼得那些暴徒不敢上前！他一把拉起妳的手：「快跑！」", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "將魔力注入他的火系魔法中，發動「熔岩複合魔法」反擊", optATarget: "014", optBText: "跟隨 his 腳步，拼命往有燈光的夏奈大道逃跑", optATarget: "015", triggerAch: "" },
-            "011": { id: "011", name: "寒煙", text: "「那是……什麼畫？為什麼背景看起來像是春煦市上空的雲層？」妳的直覺被那幅畫死死吸引，那種線條與意境，太像妳內心深處的秘密了。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "要求他把畫打開來讓妳看個清楚", optATarget: "016", optBText: "", optBTarget: "", triggerAch: "" },
-            "012": { id: "012", name: "系統提示", text: "兩人在微涼的巷弄裡對坐。子默毫無保留地分享他在夏奈市因為貧窮被排擠、甚至輟學的過去，但他澄澈的眼眸裡，沒有一絲怨恨，只有對夢想的執著。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "「夏奈中學……被排擠？」妳心頭猛然一跳，想起了一段陳舊的記憶", optATarget: "017", optBText: "默默聆聽，驚訝於一個處於底層的人竟然能如此耀眼", optATarget: "018", triggerAch: "ACH_02" },
+            "008": { id: "008", name: "蕭子默", text: "「別誤會！我叫蕭子默，只是個流浪畫家。妳跳舞的時候，靈魂在發光。但剛才看到妳一個人跑出來，眼神太令人放心不下了。」他抓了抓黑髮，笑得毫無防備。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "注意到他背後的畫筒裡露出一截夢幻的畫卷", optATarget: "011", optBText: "稍微放下戒心，接過他遞過來的熱可可", optATarget: "012", triggerAch: "" },
+            "009": { id: "009", name: "蕭子默", text: "「不管妳相不相信，這個世界上，總有人是因為妳的起舞才看見希望的。」他沒有走，反而蹲在妳身旁，把自己的外套披在妳冰冷的肩上。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "感受到外套上傳來的陽光香氣，心頭微微一震", optATarget: "012", optBText: "推開外套，叫他「不要多管閒事」", optATarget: "013", triggerAch: "" },
+            "010": { id: "010", name: "蕭子默", text: "「離她遠點！」子默突然大吼，他雖然只是個初階火系法師，但他眼中燃燒的橙色怒火，竟逼得那些暴徒不敢上前！他一把拉起妳的手：「快跑！」", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "將魔力注入他的火系魔法中，發動「熔岩複合魔法」反擊", optATarget: "014", optBText: "跟隨他的腳步，拼命往有燈光的夏奈大道逃跑", optATarget: "015", triggerAch: "" },
+            "011": { id: "011", name: "寒煙", text: "「那是……什麼畫？為什麼背景看起來像是春煦市上空的雲層？」妳的直覺被那幅畫死死吸引，那種線條與意境，太像妳內心深處的秘密了。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "要求他把畫打開來讓妳看個清楚", optATarget: "016", optBText: "", optBTarget: "", triggerAch: "" },
+            "012": { id: "012", name: "系統提示", text: "兩人在微涼的巷弄裡對坐。子默毫無保留地分享他在夏奈市因為貧窮被排擠、甚至輟學的過去，但他澄澈的眼眸裡，沒有一絲怨恨，只有對夢想的執著。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "「夏奈中學……被排擠？」妳心頭猛然一跳，想起了一段陳舊的記憶", optATarget: "017", optBText: "默默聆聽，驚訝於一個處於底層的人竟然能如此耀眼", optATarget: "018", triggerAch: "ACH_02" },
             "013": { id: "013", name: "系統提示", text: "子默無奈地嘆了口氣，將外套留在原地。「那我走了。不管如何，請別對自己失望。」他的離去讓巷弄重新陷入永恆的冰冷。此時，黑暗中的厄索拉暴徒發動了偷襲……", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "勢單力薄被擄走，故事悲劇落幕", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_02" },
             "014": { id: "014", name: "系統提示", text: "轟！！妳的冰霜與他的火焰在空中完美融合，化作滾燙且破壞力驚人的熔岩洪流，一舉擊潰了厄索拉暴徒！子默震驚地看著妳，隨後開心地笑了起來。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "擦掉臉上的灰塵，看著他沾滿炭黑卻無比耀眼的笑臉", optATarget: "019", optBText: "", optBTarget: "", triggerAch: "ACH_COOP" },
-            "015": { id: "015", name: "系統提示", text: "兩人狼狽地逃到了燈火通明的夏奈大道，暴徒不願暴露身分，便隱入黑暗中。子默一屁股坐在地上拍著胸口：「呼，刺激！不過妳的長跑耐力也太厲害了吧？」", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "「因為我每一天，都在進行魔鬼般的芭蕾訓練啊……」妳忍不住失笑", optATarget: "019", optBText: "", optBTarget: "", triggerAch: "" },
-            "016": { id: "016", name: "蕭子默", text: "「這是我剛成名的代表作，叫《空中芭蕾》。歸功於半年前，我瞞著所有人爬上春煦大廈頂樓找靈感，結果親眼看到一位仙女在漫天雲海中起舞……」子默緩緩展開畫卷。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "（呼吸凝固）那幅畫的鏡子角落，刻著一個不起眼的「煙」字特徵", optATarget: "020", optBText: "假裝鎮定：「畫得不錯，但只是巧合吧。」", optATarget: "021", triggerAch: "" },
-            "017": { id: "017", name: "寒煙", text: "「你……高一的時候，是不是總在夏奈中學的後門舊車棚畫畫？然後有一群圍著妳扔石頭的壞學生？」妳的聲音微微顫抖，壓抑在心底的過往浮上水面。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "看著他瞬間呆滯、隨即劇烈動搖的橙色眼眸", optATarget: "022", optBText: "", optBTarget: "", triggerAch: "" },
-            "018": { id: "018", name: "蕭子默", text: "「其實，我之所以能在逆境中走到今天，是因為我高一被排擠時，有個來我們學校交流的女孩。她一頭白髮，像仙女一樣強悍，每次都把我護在身後……」他看著妳，眼神逐漸亮了起來。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "嘆了口氣：「你這笨蛋，隔了十年，居然到現在才認出我嗎？」", optATarget: "022", optBText: "", optBTarget: "", triggerAch: "" },
+            "015": { id: "015", name: "系統提示", text: "兩人狼狽地逃到了燈火通明的夏奈大道，暴徒不願暴露身分，便隱入黑暗中。子默一屁股坐在地上拍著胸口：「呼，刺激！不過妳的長跑耐力也太厲害了吧？」", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "「因為我每一天，都在進行魔鬼般的芭蕾訓練啊……」妳忍不住失笑", optATarget: "019", optBText: "", optBTarget: "", triggerAch: "" },
+            "016": { id: "016", name: "蕭子默", text: "「這是我剛成名的代表作，叫《空中芭蕾》。歸功於半年前，我瞞著所有人爬上春煦大廈頂樓找靈感，結果親眼看到一位仙女在漫天雲海中起舞……」子默緩緩展開畫卷。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "（呼吸凝固）那幅畫的鏡子角落，刻著一個不起眼的「煙」字特徵", optATarget: "020", optBText: "假裝鎮定：「畫得不錯，但只是巧合吧。」", optATarget: "021", triggerAch: "" },
+            "017": { id: "017", name: "寒煙", text: "「你……高一的時候，是不是總在夏奈中學的後門舊車棚畫畫？然後有一群圍著妳扔石頭的壞學生？」妳的聲音微微顫抖，壓抑在心底的過往浮上水面。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "看著他瞬間呆滯、隨即劇烈動搖的橙色眼眸", optATarget: "022", optBText: "", optBTarget: "", triggerAch: "" },
+            "018": { id: "018", name: "蕭子默", text: "「其實，我之所以能在逆境中走到今天，是因為我高一被排擠時，有個來我們學校交流的女孩。她一頭白髮，像仙女一樣強悍，每次都把我護在身後……」他看著妳，眼神逐漸亮了起來。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "嘆了口氣：「你這笨蛋，隔了十年，居然到現在才認出我嗎？」", optATarget: "022", optBText: "", optBTarget: "", triggerAch: "" },
             "019": { id: "019", name: "蕭子默", text: "「不管怎樣，今天遇見妳真的很開心。對了，既然大明星現在沒地方去，要不要去我的秘密畫室看看？就在這附近。」他向妳發出了真誠的邀請。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "「好，帶路吧。」直覺告訴妳，那裡有妳尋求的答案", optATarget: "023", optBText: "「不了，我該回去了。」有些退縮，害怕打破現狀", optATarget: "024", triggerAch: "" },
             "020": { id: "020", name: "寒煙", text: "「這幅畫……你是在春煦大廈的頂樓天台看見的對吧？半年前，我因為壓力太大，瞞著所有人躲在那裡瘋狂地跳舞……」妳摸著畫紙，眼眶發紅。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "「原來，我那天在雲端裡看到的仙女……就是妳！」子默激動得流下眼淚", optATarget: "025", triggerAch: "ACH_03" },
             "021": { id: "021", name: "蕭子默", text: "「也許吧……但我相信我的直覺，我一定會找到她的。」他收起畫，雖然有些失落，但他眼中的溫暖依舊治癒了妳今晚的孤獨。兩人結伴走出了暗巷。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "第一章【錯過的微光】結束", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_04" },
@@ -458,7 +459,6 @@
             "025": { id: "025", name: "系統提示", text: "白髮藍眼的芭蕾首席，與黑髮橙瞳的逆境畫家。在命運的黑夜與危機中，這兩個二十六歲的靈魂終於緊緊嚙合。春煦市與夏奈市的交界處，真摯的花語正在悄悄綻放。——第一章【重逢與陰影】完結。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "慶祝真結局！解鎖終極成就", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_TRUE_01" }
         };
 
-        // 🏆 【擴充版成就圖鑑】
         const LOCAL_ACHIEVEMENTS = [
             { id: "ACH_01", title: "逃離聚光燈", desc: "面對世俗的讚美與窒息的期待，妳勇敢地選擇躲進黑暗中喘息。" },
             { id: "ACH_02", title: "命運之夜的熱可可", desc: "在最冰冷的夜裡，接受了來自黑髮橙瞳畫家最純粹的善意與救贖。" },
@@ -478,7 +478,11 @@
             achData = LOCAL_ACHIEVEMENTS;
             achData.forEach(a => achMap[a.id] = a);
             checkLocalStorageSaveState();
-            switchScreen('main-menu-screen');
+            
+            // 延時半秒直接進入主選單，防止異步加載卡住
+            setTimeout(() => {
+                switchScreen('main-menu-screen');
+            }, 500);
         });
 
         function switchScreen(screenId) {
@@ -568,13 +572,13 @@
 
             const imgLeft = document.getElementById('char-left');
             if (scene.charLeft && scene.charLeft.trim() !== '') {
-                imgLeft.src = scene.charLeft; imgLeft.style.opacity = '1';
-            } else { imgLeft.style.opacity = '0'; }
-
-            const imgRight = document.getElementById('char-right');
-            if (scene.charRight && scene.charRight.trim() !== '') {
-                imgRight.src = scene.charRight; imgRight.style.opacity = '1';
-            } else { imgRight.style.opacity = '0'; }
+                imgLeft.src = scene.charLeft; 
+                imgLeft.style.opacity = '1';
+                imgLeft.style.display = 'block';
+            } else { 
+                imgLeft.style.opacity = '0'; 
+                imgLeft.style.display = 'none';
+            }
 
             document.getElementById('speaker-name').innerText = scene.name ? scene.name : '（系統提示）';
             runTypeWriterAnimation(scene.text);
@@ -599,7 +603,7 @@
                 if (charIndex < textStr.length) {
                     dialogTextElement.innerText += textStr.charAt(charIndex);
                     charIndex++;
-                    typeWriterTimeout = setTimeout(step, 30); 
+                    typeWriterTimeout = setTimeout(step, 25); 
                 }
             }
             step();
