@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>花語 - Han & ZiMo Edition</title>
+    <title> Han & ZiMo Illustrated Edition</title>
     <style>
         /* ==========================================================================
            1. 基礎重設與核心佈局 (Reset & Core Layout)
@@ -14,7 +14,7 @@
             padding: 0;
             image-rendering: pixelated;
         }
-        
+        
         body {
             background-color: #08080a;
             color: #ffffff;
@@ -29,10 +29,10 @@
         /* 📱 手機豎屏安全容器 */
         #game-container {
             width: 100%;
-            max-width: 430px; 
-            height: 100vh;   
-            height: 100dvh;  
-            max-height: 932px; 
+            max-width: 430px; 
+            height: 100vh;   
+            height: 100dvh;  
+            max-height: 932px; 
             border: 4px solid #3a3a45;
             background-color: #121216;
             position: relative;
@@ -42,9 +42,6 @@
             box-shadow: 0px 10px 30px rgba(0,0,0,0.7);
         }
 
-        /* ==========================================================================
-           2. 狀態畫面控制 (Screens Switching)
-           ========================================================================== */
         .screen {
             position: absolute;
             top: 0;
@@ -56,39 +53,36 @@
             background-color: #121216;
             z-index: 1;
         }
-        
+        
         .screen.active {
             display: flex;
         }
 
-        /* ==========================================================================
-           3. 通用樸素像素大按鈕 (Pixel UI Buttons)
-           ========================================================================== */
         .pixel-button {
             width: 100%;
-            padding: 16px 20px;
+            padding: 14px 16px;
             background-color: #1c1c24;
             border: 3px solid #ffffff;
             color: #ffffff;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             font-family: inherit;
             cursor: pointer;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             outline: none;
             transition: background 0.1s;
         }
-        
+        
         .pixel-button:hover:not(:disabled) {
             background-color: #2a2a35;
         }
-        
+        
         .pixel-button:active:not(:disabled) {
             background-color: #ffffff;
             color: #121216;
         }
-        
+        
         .pixel-button:disabled {
             border-color: #444452;
             color: #444452;
@@ -109,9 +103,6 @@
             margin-bottom: 15px;
         }
 
-        /* ==========================================================================
-           4. 讀取中畫面 (Loading Screen)
-           ========================================================================== */
         #loading-screen {
             justify-content: center;
             align-items: center;
@@ -129,21 +120,18 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ==========================================================================
-           5. 遊戲主畫面 (Main Menu Screen)
-           ========================================================================== */
         #main-menu-screen {
             justify-content: space-between;
             align-items: center;
             padding: 60px 30px;
             background: linear-gradient(180deg, #121216 0%, #1a1a24 100%);
         }
-        
+        
         .game-title-area {
             text-align: center;
             margin-top: 40px;
         }
-        
+        
         .game-title {
             font-size: 36px;
             font-weight: bold;
@@ -151,26 +139,23 @@
             line-height: 1.2;
             letter-spacing: 2px;
         }
-        
+        
         .game-subtitle {
             font-size: 14px;
             color: #8a8a9e;
             margin-top: 10px;
             letter-spacing: 1px;
         }
-        
+        
         .menu-buttons {
             width: 100%;
             margin-bottom: 60px;
         }
 
-        /* ==========================================================================
-           6. 成就圖鑑介面
-           ========================================================================== */
         .menu-layout {
             padding: 24px;
         }
-        
+        
         .screen-title {
             font-size: 24px;
             font-weight: bold;
@@ -180,14 +165,14 @@
             border-bottom: 2px dashed #3a3a45;
             padding-bottom: 10px;
         }
-        
+        
         .list-scroll-view {
             flex: 1;
             overflow-y: auto;
             margin-bottom: 15px;
             padding-right: 4px;
         }
-        
+        
         .list-scroll-view::-webkit-scrollbar { width: 6px; }
         .list-scroll-view::-webkit-scrollbar-track { background: #15151c; }
         .list-scroll-view::-webkit-scrollbar-thumb { background: #3a3a45; }
@@ -201,53 +186,50 @@
             flex-direction: column;
             gap: 6px;
         }
-        
+        
         .achievement-card.unlocked {
             border-color: #ffffff;
             background-color: #1c1c24;
         }
-        
+        
         .ach-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+        
         .ach-title {
             font-size: 16px;
             font-weight: bold;
             color: #8a8a9e;
         }
-        
+        
         .achievement-card.unlocked .ach-title {
             color: #ffde59;
         }
-        
+        
         .ach-status {
             font-size: 11px;
             padding: 2px 6px;
             border: 1px solid #444452;
             color: #444452;
         }
-        
+        
         .achievement-card.unlocked .ach-status {
             border-color: #ffde59;
             color: #ffde59;
         }
-        
+        
         .ach-desc {
             font-size: 13px;
             color: #444452;
             line-height: 1.4;
         }
-        
+        
         .achievement-card.unlocked .ach-desc {
             color: #d1d1e0;
         }
 
-        /* ==========================================================================
-           7. 核心遊戲遊玩畫面 (Gameplay Screen)
-           ========================================================================== */
         #game-screen {
             padding: 0;
             justify-content: flex-start;
@@ -255,7 +237,7 @@
 
         #stage-area {
             width: 100%;
-            height: 48%; 
+            height: 48%; 
             background-color: #1a1a24;
             background-size: cover;
             background-position: center;
@@ -270,13 +252,13 @@
 
         .character-sprite {
             width: auto;
-            height: 85%; 
+            height: 95%; 
             max-width: 48%;
             object-fit: contain;
             transition: opacity 0.2s;
             z-index: 2;
         }
-        
+        
         .game-menu-trigger {
             position: absolute;
             top: 16px;
@@ -293,17 +275,17 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 12px;
+            gap: 8px;
         }
 
         #dialog-box {
             border: 3px solid #ffffff;
             background-color: #121216;
             padding: 14px;
-            min-height: 110px;
+            min-height: 120px;
             flex-shrink: 0;
         }
-        
+        
         #speaker-name {
             font-size: 16px;
             font-weight: bold;
@@ -311,14 +293,14 @@
             margin-bottom: 6px;
             letter-spacing: 1px;
         }
-        
+        
         #dialog-text {
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.6;
             color: #ffffff;
             word-break: break-all;
         }
-        
+        
         #dialog-text::after {
             content: ' █';
             animation: cursorBlink 0.8s infinite;
@@ -331,40 +313,30 @@
             flex-direction: column;
             margin-top: auto;
         }
-        
-        #options-container .pixel-button {
-            margin-bottom: 10px;
-        }
-        #options-container .pixel-button:last-child {
-            margin-bottom: 0;
-        }
 
-        /* ==========================================================================
-           🏆 質感升級版：成就彈出通知
-           ========================================================================== */
         #achievement-toast {
             position: absolute;
-            top: -120px; 
+            top: -120px; 
             left: 5%;
             width: 90%;
-            background-color: rgba(28, 28, 36, 0.9); 
-            backdrop-filter: blur(4px); 
-            border: 3px solid rgba(255, 222, 89, 0.9); 
+            background-color: rgba(28, 28, 36, 0.95); 
+            backdrop-filter: blur(4px); 
+            border: 3px solid rgba(255, 222, 89, 0.9); 
             padding: 12px 16px;
             display: flex;
             flex-direction: column;
             gap: 2px;
-            z-index: 999; 
+            z-index: 999; 
             box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
         #achievement-toast.show {
-            top: 20px; 
+            top: 20px; 
         }
 
         .toast-header {
-            font-size: 11px; 
+            font-size: 11px; 
             color: #ffde59;
             font-weight: bold;
             letter-spacing: 1px;
@@ -378,8 +350,8 @@
         }
 
         .toast-desc {
-            font-size: 11px; 
-            color: #b2b2c2; 
+            font-size: 11px; 
+            color: #b2b2c2; 
             line-height: 1.3;
         }
     </style>
@@ -387,24 +359,24 @@
 <body>
 
     <div id="game-container">
-        
+        
         <div id="achievement-toast">
             <div class="toast-header">🏆 獲得成就！</div>
             <div class="toast-title" id="toast-title-text">成就名稱</div>
             <div class="toast-desc" id="toast-desc-text">這裡會顯示成就的詳細描述內容...</div>
         </div>
-        
+        
         <div id="loading-screen" class="screen active">
             <div class="spinner"></div>
-            <h3>正在初始化劇本...</h3>
+            <h3>正在初始化長篇插圖劇本...</h3>
         </div>
 
         <div id="main-menu-screen" class="screen">
             <div class="game-title-area">
                 <div class="game-title">煙成漠然</div>
-                <div class="game-subtitle">あなたの側に居たかっただけ構造なのに</div>
+                <div class="game-subtitle">第一章</div>
             </div>
-            
+            
             <div class="menu-buttons">
                 <button class="pixel-button" onclick="uiStartNewGame()">新 游 戲</button>
                 <button class="pixel-button" id="continue-btn" onclick="uiContinueGame()" disabled>繼 續 遊 戲</button>
@@ -424,13 +396,13 @@
                 <img id="char-left" class="character-sprite" src="" alt="">
                 <img id="char-right" class="character-sprite" src="" alt="">
             </div>
-            
+            
             <div id="ui-area">
                 <div id="dialog-box">
                     <div id="speaker-name">載入中</div>
                     <div id="dialog-text">正在讀取文字內容...</div>
                 </div>
-                
+                
                 <div id="options-container"></div>
             </div>
         </div>
@@ -438,119 +410,76 @@
     </div>
 
     <script>
-        // 【保留妳專屬的 Google 試算表設定，做為備用連線】
-        const SPREADSHEET_ID = ''; 
-        const BASE_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
-
-        let scriptData = {};    
-        let achData = [];       
-        let achMap = {}; 
+        let scriptData = {};    
+        let achData = [];       
+        let achMap = {}; 
         let typeWriterTimeout = null;
 
-        // 🎬 【寒煙 ✕ 蕭子默】核心打包內置劇本
-        const LOCAL_SCRIPT = {
-            "001": { id: "001", name: "系統提示", text: "奧菲洛國度，春煦市大劇院。台下的掌聲如雷鳴般響起，大燈聚光在妳身上。妳剛完成了完美的《胡桃鉗》演出，但內心卻只有無盡的窒息感……", bg: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Sad", charRight: "", optAText: "逃離現場，躲進無人的暗巷哭泣", optATarget: "002", optBText: "強撐著微笑，去參加家族的慈善晚宴", optBTarget: "003", triggerAch: "" },
-            "002": { id: "002", name: "寒煙", text: "（抱著雙膝坐在冰冷的後巷，藍眸裡滿是迷茫）跳舞……到底能帶給我什麼？為什麼每個人都說完美，我卻只想逃跑？", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Cry", charRight: "", optAText: "繼續沉浸在黑暗的孤獨中", optATarget: "004", optBText: "抬頭看著突然傳來的溫暖腳步聲", optBTarget: "005", triggerAch: "ACH_01" },
-            "003": { id: "003", name: "系統提示", text: "妳回到了充滿虛偽奉承的貴族晚宴。家人的期許、政商名流的目光像枷鎖一樣死死扣著妳。妳的心靈徹底迷失在名利之中。", bg: "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Blank", charRight: "", optAText: "靈魂枯萎（點擊返回主畫面）", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_01" },
-            "004": { id: "004", name: "系統提示", text: "妳拒絕了所有與外界接觸的可能。冰冷的雨水落了下來，如雪片般沉默的女孩，最終在自己的陰影裡迷失了方向。", bg: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Lost", charRight: "", optAText: "故事遺憾落幕（點擊返回主畫面）", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "" },
-            "005": { id: "005", name: "蕭子默", text: "嗨，那個……這麼晚了，妳一個人坐在這裡哭，會感冒的喔。這把傘和這杯熱可可，先給妳吧？", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Surprise", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Smile", optAText: "冷冷地叫他走開，別管閒事", optATarget: "006", optBText: "接過微熱的杯子，撞進他橙色的眼眸中", optBTarget: "007", triggerAch: "" },
-            "006": { id: "006", name: "蕭子默", text: "哈哈，好吧，既然妳現在想一個人靜靜，那傘我留在這裡。別哭了喔，妳的眼睛像星星一樣好看，哭紅就可惜了。", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Regret", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Leave", optAText: "看著他離去的背影，突然感到一絲後悔", optATarget: "002", optBText: "", optBTarget: "", triggerAch: "" },
-            "007": { id: "007", name: "系統提示", text: "他的笑容熱情如光，像個小太陽一樣。當妳接過可可時，意外注意到他肩上的畫筒裡，露出一張名為《空中芭蕾》的草稿。", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Stare", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Warm", optAText: "指著那幅畫問：「那是……你畫的？」", optATarget: "008", optBText: "沉默不語，只是低頭喝著可可", optATarget: "009", triggerAch: "ACH_02" },
-            "008": { id: "008", name: "蕭子默", text: "啊！妳說這個？這是我的成名作《空中芭蕾》。其實……我一直在尋找畫裡的女孩。那天我在夏奈市高處看到一個仙女在雲端起舞，可惜沒看清她的臉。", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Shock", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Excite", optAText: "震驚！那正是妳半年前壓力大時去頂樓跳舞的宣洩", optATarget: "010", optBText: "故意隱瞞，假裝不認識畫中人", optBTarget: "011", triggerAch: "" },
-            "009": { id: "009", name: "蕭子默", text: "呼，好啦！心情有沒有好一點？對了，我總覺得妳很眼熟……總覺得，妳長得很像我中學時期，那個經常把我護在身後的女孩？", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Memory", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Curious", optAText: "震驚！想起妳國中曾去夏奈市客座，順手救過一個被排擠的男孩", optATarget: "012", optBText: "否認：「你認錯人了，我是春煦市的人。」", optBTarget: "013", triggerAch: "" },
-            "010": { id: "010", name: "寒煙", text: "（手微微顫抖）原來……你就是那個畫家……你畫的那個背景，是我那天以為沒人看見的秘密。", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Blush", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Shock", optAText: "兩人相認，命運的齒輪正式嚙合", optATarget: "014", optBText: "", optBTarget: "", triggerAch: "ACH_03" },
-            "011": { id: "011", name: "系統提示", text: "妳選擇了隱瞞，但也因為他的陽光與熱情，原本封閉冰冷的心防悄悄融化了一角。這場短暫的相遇，成為了妳今晚唯一的救贖。", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_SoftSmile", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Wave", optAText: "故事第一章結束，期待重逢", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_04" },
-            "012": { id: "012", name: "蕭子默", text: "天啊！真的是妳！夏奈中學那時候我天天被排擠，要不是妳拉我一把，我早就放棄畫畫了。原來……妳就是我的白月光，也是我的《空中芭蕾》！", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Moved", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Tears", optAText: "雙向救贖解鎖！緊緊相擁", optATarget: "014", optBText: "", optBTarget: "", triggerAch: "ACH_05" },
-            "013": { id: "013", name: "蕭子默", text: "這樣啊……對不起，是我唐突了。不過不管怎樣，希望這杯可可能讓妳暖和起來。這個世界還是有希望的，要加油喔！", bg: "https://images.unsplash.com/photo-1515621061946-eff1c2a352bd?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Lonely", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_SadSmile", optAText: "擦肩而過的遺憾（點擊返回主畫面）", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_02" },
-            "014": { id: "014", name: "系統提示", text: "橙瞳的陽光畫家，終於找到了他漂浮在雲端的白髮女主角。舞台上的聚光燈雖然冰冷，但此刻在黑暗的巷弄裡，真摯的希望已然誕生。第一章【花語：重逢】完結。", bg: "https://images.unsplash.com/photo-1494791368093-85217fbbf8de?q=80&w=800", charLeft: "https://placehold.co/400x600/222233/ffffff?text=HanYan_Together", charRight: "https://placehold.co/400x600/332211/ffffff?text=ZiMo_Together", optAText: "返回主畫面", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_TRUE_01" }
+        // 🎨 【圖像資料庫：由妳提供的精美手繪立繪直接驅動】
+        const IMAGE_ASSETS = {
+            // 寒煙單人圖 (酒杯歡笑)
+            "HanYan_Smile": "https://images.vrm.im/2026/05/25/hanyan-wine.png",
+            // 寒煙單人圖 (雪景迷茫)
+            "HanYan_Snow": "https://images.vrm.im/2026/05/25/hanyan-snow.png",
+            // 寒煙與蕭子默雙人宿命合照 (真结局與核心重逢使用)
+            "Together_Destiny": "https://images.vrm.im/2026/05/25/together.png",
+            // 基礎背景圖預設
+            "Theater_BG": "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=800",
+            "Gala_BG": "https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=800",
+            "Street_BG": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=800"
         };
 
-        // 🏆 【內置成就數據】
+        // 🎬 【寒煙 ✕ 蕭子默】長篇多分支內建劇本（圖片代碼已完美替換）
+        const LOCAL_SCRIPT = {
+            "001": { id: "001", name: "系統提示", text: "奧菲洛國度，春煦市大劇院。台下的掌聲雷動，無數鮮花拋向舞台。妳剛完成了完美的《胡桃鉗》演出，但身為「春煦市的驕傲」，妳只感到鋪天蓋地的壓抑與迷失。", bg: IMAGE_ASSETS.Theater_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "推開祝賀的經紀人，轉身逃進無人的暗巷", optATarget: "002", optBText: "強撐微笑，前往應酬父母安排的貴族慈善晚宴", optBTarget: "003", triggerAch: "" },
+            "002": { id: "002", name: "寒煙", text: "（抱著膝蓋坐在冰冷的雨後後巷，一頭白髮被風吹亂）完美、又是完美……跳舞究竟能帶給我什麼？如果我只是家族用來裝點門面的玩偶……", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "任由淚水流淌，封閉內心，不理會周遭的雜音", optATarget: "004", optBText: "驚覺巷口傳來不尋常的動靜，戒備地抬頭", optATarget: "005", triggerAch: "ACH_01" },
+            "003": { id: "003", name: "系統提示", text: "妳回到了慈善晚宴。父母熱情地向政商名流介紹妳的成功，卻沒有人在乎妳雙腳扭傷的劇痛。在虛偽的聚光燈下，妳腦中緊繃的弦終於斷裂……", bg: IMAGE_ASSETS.Gala_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "情緒失控暈倒，從此成為活在精神病院的提線木偶", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_01" },
+            "004": { id: "004", name: "系統提示", text: "夜晚的溫度急遽下降。妳體內潛藏的稀有「冰系初階魔法」因為情緒失控而暴走，巷弄周圍開始結霜。就在這時，黑暗中突然晃過幾個不懷好意的身影……", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "魔力反噬受傷，視線逐漸模糊", optATarget: "006", optBText: "勉強站起身，準備用冰系魔法自衛", optATarget: "007", triggerAch: "" },
+            "005": { id: "005", name: "蕭子默", text: "「呼，好險！從大劇院後門一路跟過來，總算找到妳了……妳沒事吧？春煦市的首席舞者？」一個背著大畫筒的黑髮青年喘著氣停在妳面前，眼眸是溫暖的橙色。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "「你是誰？追過來有什麼企圖？」冷冽地質問他", optATarget: "008", optBText: "「……別管我。」疲憊地低下頭，不想讓人看見脆弱", optATarget: "009", triggerAch: "" },
+            "006": { id: "006", name: "厄索拉暴徒", text: "「嘿嘿，果然是慈善名門的千金大小姐。把她綁架回『厄索拉帝國』，肯定能狠狠敲一筆！」幾個穿著漆黑斗篷、帶著雷雨氣息的罪犯將妳包圍。", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "絕望之際，突然一道熾熱的橘色火光將暴徒逼退！", optATarget: "010", optBText: "", optBTarget: "", triggerAch: "ACH_CRISIS" },
+            "007": { id: "007", name: "系統提示", text: "妳咬牙凝結出冰錐，但對方的行動更快！這群人身上帶著雷電的力量，顯然是來自永夜之國『厄索拉』的強大罪犯！眼看冰錐被雷擊碎，妳危在旦夕——", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "危急時刻，有人揮舞著燃燒的畫架擋在妳身前！", optATarget: "010", optBText: "", optBTarget: "", triggerAch: "" },
+            "008": { id: "008", name: "蕭子默", text: "「別誤會！我叫蕭子默，只是個流浪畫家。妳跳舞的時候，靈魂在發光。但剛才看到妳一個人跑出來，眼神太令人放心不下了。」他抓了抓黑髮，笑得毫無防備。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "注意到他背後的畫筒裡露出一截夢幻的畫卷", optATarget: "011", optBText: "稍微放下戒心，接過他遞過來的熱可可", optATarget: "012", triggerAch: "" },
+            "009": { id: "009", name: "蕭子默", text: "「不管妳相不相信，這個世界上，總有人是因為妳的起舞才看見希望的。」他沒有走，反而蹲在妳身旁，把自己的外套披在妳冰冷的肩上。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "感受到外套上傳來的陽光香氣，心頭微微一震", optATarget: "012", optBText: "推開外套，叫他「不要多管閒事」", optATarget: "013", triggerAch: "" },
+            "010": { id: "010", name: "蕭子默", text: "「離她遠點！」子默突然大吼，他雖然只是個初階火系法師，但他眼中燃燒的橙色怒火，竟逼得那些暴徒不敢上前！他一把拉起妳的手：「快跑！」", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "將魔力注入他的火系魔法中，發動「熔岩複合魔法」反擊", optATarget: "014", optBText: "跟隨 his 腳步，拼命往有燈光的夏奈大道逃跑", optATarget: "015", triggerAch: "" },
+            "011": { id: "011", name: "寒煙", text: "「那是……什麼畫？為什麼背景看起來像是春煦市上空的雲層？」妳的直覺被那幅畫死死吸引，那種線條與意境，太像妳內心深處的秘密了。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "要求他把畫打開來讓妳看個清楚", optATarget: "016", optBText: "", optBTarget: "", triggerAch: "" },
+            "012": { id: "012", name: "系統提示", text: "兩人在微涼的巷弄裡對坐。子默毫無保留地分享他在夏奈市因為貧窮被排擠、甚至輟學的過去，但他澄澈的眼眸裡，沒有一絲怨恨，只有對夢想的執著。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "「夏奈中學……被排擠？」妳心頭猛然一跳，想起了一段陳舊的記憶", optATarget: "017", optBText: "默默聆聽，驚訝於一個處於底層的人竟然能如此耀眼", optATarget: "018", triggerAch: "ACH_02" },
+            "013": { id: "013", name: "系統提示", text: "子默無奈地嘆了口氣，將外套留在原地。「那我走了。不管如何，請別對自己失望。」他的離去讓巷弄重新陷入永恆的冰冷。此時，黑暗中的厄索拉暴徒發動了偷襲……", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "勢單力薄被擄走，故事悲劇落幕", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_02" },
+            "014": { id: "014", name: "系統提示", text: "轟！！妳的冰霜與他的火焰在空中完美融合，化作滾燙且破壞力驚人的熔岩洪流，一舉擊潰了厄索拉暴徒！子默震驚地看著妳，隨後開心地笑了起來。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "擦掉臉上的灰塵，看著他沾滿炭黑卻無比耀眼的笑臉", optATarget: "019", optBText: "", optBTarget: "", triggerAch: "ACH_COOP" },
+            "015": { id: "015", name: "系統提示", text: "兩人狼狽地逃到了燈火通明的夏奈大道，暴徒不願暴露身分，便隱入黑暗中。子默一屁股坐在地上拍著胸口：「呼，刺激！不過妳的長跑耐力也太厲害了吧？」", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "「因為我每一天，都在進行魔鬼般的芭蕾訓練啊……」妳忍不住失笑", optATarget: "019", optBText: "", optBTarget: "", triggerAch: "" },
+            "016": { id: "016", name: "蕭子默", text: "「這是我剛成名的代表作，叫《空中芭蕾》。歸功於半年前，我瞞著所有人爬上春煦大廈頂樓找靈感，結果親眼看到一位仙女在漫天雲海中起舞……」子默緩緩展開畫卷。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "（呼吸凝固）那幅畫的鏡子角落，刻著一個不起眼的「煙」字特徵", optATarget: "020", optBText: "假裝鎮定：「畫得不錯，但只是巧合吧。」", optATarget: "021", triggerAch: "" },
+            "017": { id: "017", name: "寒煙", text: "「你……高一的時候，是不是總在夏奈中學的後門舊車棚畫畫？然後有一群圍著妳扔石頭的壞學生？」妳的聲音微微顫抖，壓抑在心底的過往浮上水面。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "看著他瞬間呆滯、隨即劇烈動搖的橙色眼眸", optATarget: "022", optBText: "", optBTarget: "", triggerAch: "" },
+            "018": { id: "018", name: "蕭子默", text: "「其實，我之所以能在逆境中走到今天，是因為我高一被排擠時，有個來我們學校交流的女孩。她一頭白髮，像仙女一樣強悍，每次都把我護在身後……」他看著妳，眼神逐漸亮了起來。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "嘆了口氣：「你這笨蛋，隔了十年，居然到現在才認出我嗎？」", optATarget: "022", optBText: "", optBTarget: "", triggerAch: "" },
+            "019": { id: "019", name: "蕭子默", text: "「不管怎樣，今天遇見妳真的很開心。對了，既然大明星現在沒地方去，要不要去我的秘密畫室看看？就在這附近。」他向妳發出了真誠的邀請。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "「好，帶路吧。」直覺告訴妳，那裡有妳尋求的答案", optATarget: "023", optBText: "「不了，我該回去了。」有些退縮，害怕打破現狀", optATarget: "024", triggerAch: "" },
+            "020": { id: "020", name: "寒煙", text: "「這幅畫……你是在春煦大廈的頂樓天台看見的對吧？半年前，我因為壓力太大，瞞著所有人躲在那裡瘋狂地跳舞……」妳摸著畫紙，眼眶發紅。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "「原來，我那天在雲端裡看到的仙女……就是妳！」子默激動得流下眼淚", optATarget: "025", triggerAch: "ACH_03" },
+            "021": { id: "021", name: "蕭子默", text: "「也許吧……但我相信我的直覺，我一定會找到她的。」他收起畫，雖然有些失落，但他眼中的溫暖依舊治癒了妳今晚的孤獨。兩人結伴走出了暗巷。", bg: IMAGE_ASSETS.Street_BG, charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "第一章【錯過的微光】結束", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_04" },
+            "022": { id: "022", name: "蕭子默", text: "「真的是妳……恩人！我的天啊，我找了妳整整十年！」青年不顧身上的髒污，眼眶通紅地死死抱住妳。這一次，換他用溫熱的身軀，將沉默如雪的妳護在懷中。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "把臉埋進他的肩窩，耳根通紅，內心的窒息感煙消雲散", optATarget: "025", triggerAch: "ACH_05" },
+            "023": { id: "023", name: "系統提示", text: "在子默溫馨狹小的畫室裡，妳看到了滿牆的芭蕾舞草稿。每一幅，都精準抓住了妳舞蹈時靈魂的痛苦與高潔。妳終於明白，妳的舞蹈沒有白費，因為它拯救了眼前的少年。", bg: "", charLeft: IMAGE_ASSETS.HanYan_Smile, charRight: "", optAText: "望向彼此，決定攜手對抗命運的枷鎖", optATarget: "025", triggerAch: "" },
+            "024": { id: "024", name: "系統提示", text: "妳轉身坐上了回家的豪華轎車。隔著車窗，妳看著子默孤零零揮手的身影逐漸變小。妳重新戴上了首席舞者的完美面具，將這晚的溫暖葬在記憶深處。", bg: "", charLeft: IMAGE_ASSETS.HanYan_Snow, charRight: "", optAText: "回到平行線的遺憾終局", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_BAD_03" },
+            "025": { id: "025", name: "系統提示", text: "白髮藍眼的芭蕾首席，與黑髮橙瞳的逆境畫家。在命運的黑夜與危機中，這兩個二十六歲的靈魂終於緊緊嚙合。春煦市與夏奈市的交界處，真摯的花語正在悄悄綻放。——第一章【重逢與陰影】完結。", bg: "", charLeft: IMAGE_ASSETS.Together_Destiny, charRight: "", optAText: "慶祝真結局！解鎖終極成就", optATarget: "MENU_BACK", optBText: "", optBTarget: "", triggerAch: "ACH_TRUE_01" }
+        };
+
+        // 🏆 【擴充版成就圖鑑】
         const LOCAL_ACHIEVEMENTS = [
             { id: "ACH_01", title: "逃離聚光燈", desc: "面對世俗的讚美與窒息的期待，妳勇敢地選擇躲進黑暗中喘息。" },
-            { id: "ACH_02", title: "命運之夜的熱可可", desc: "在最冰冷的夜裡，接受了來自黑髮橙瞳畫家最純粹的善意。" },
-            { id: "ACH_03", title: "雲端的真相", desc: "驚人揭密！原來世人驚嘆的《空中芭蕾》，畫的就是妳最真實的靈魂宣洩。" },
-            { id: "ACH_04", title: "擦肩而過的微光", desc: "雖然沒有坦承身分，但那杯熱可可的溫度，已經悄悄融化了孤寂的白雪。" },
-            { id: "ACH_05", title: "護妳身後的少年", desc: "校園回憶殺解鎖！原來妳當初隨手拯救的落魄少年，如今成了用畫筆救贖妳的陽光畫家。" },
-            { id: "ACH_BAD_01", title: "提線玩偶的終局", desc: "妥協於慈善家家族的虛偽光環，妳的靈魂最終徹底在舞台上枯萎。" },
-            { id: "ACH_BAD_02", title: "平行線的遺憾", desc: "隱瞞了過去，否認了緣分，兩個原本能互相救贖的靈魂再次錯失彼此。" },
-            { id: "ACH_TRUE_01", title: "花語：浪舞雲端", desc: "【真結局】白髮舞者與橙瞳畫家完美重逢，命運的齒輪爆發出耀眼的光芒！" }
+            { id: "ACH_02", title: "命運之夜的熱可可", desc: "在最冰冷的夜裡，接受了來自黑髮橙瞳畫家最純粹的善意與救贖。" },
+            { id: "ACH_03", title: "雲端的真相", desc: "驚人揭密！原來世人驚嘆的《空中芭蕾》，畫的就是妳半年前在天台的真實宣洩。" },
+            { id: "ACH_04", title: "錯過的微光", desc: "雖然隱瞞了身分，但那杯熱可可的溫度與他的笑容，已悄悄融化了妳心頭的孤寂。" },
+            { id: "ACH_05", title: "護妳身後的少年", desc: "回憶殺解鎖！原來妳十年前隨手拯救的落魄輟學少年，如今成了用畫筆守護妳的陽光畫家。" },
+            { id: "ACH_CRISIS", title: "暗夜的雷鳴", desc: "成功觸發厄索拉帝國暴徒的夜襲危機事件。" },
+            { id: "ACH_COOP", title: "冰與火的交響詩", desc: "成功與子默聯手，將冰霜與火焰融合成熔岩複合魔法，擊退強敵！" },
+            { id: "ACH_BAD_01", title: "提線玩偶的終局", desc: "妥協於慈善家家族的虛偽光環，妳的精神徹底崩溃，成為舞台上的空殼。" },
+            { id: "ACH_BAD_02", title: "暗巷的終結", desc: "在拒絕外界的孤寂中，被厄索拉的黑暗徹底吞噬。" },
+            { id: "ACH_BAD_03", title: "回到平行線", desc: "畏懼了命運的改變，妳選擇回歸冰冷的上流面具，與他形同陌路。" },
+            { id: "ACH_TRUE_01", title: "花語：浪舞雲端", desc: "【真結局】白髮舞者與橙瞳畫家宿命重逢，冰雪被暖陽融化，命運的齒輪正式嚙合！" }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
-            loadGameDatabase();
-        });
-
-        async function loadGameDatabase() {
-            try {
-                // 嘗試從 Google Sheet 抓取
-                const resScript = await fetch(`${BASE_URL}&sheet=Script`);
-                const textScript = await resScript.text();
-                parseScriptTable(textScript);
-
-                try {
-                    const resAch = await fetch(`${BASE_URL}&sheet=Achievements`);
-                    const textAch = await resAch.text();
-                    parseAchievementTable(textAch);
-                } catch(e) {
-                    useLocalAchievements();
-                }
-            } catch (error) {
-                console.log("【提示】未連接雲端或表單未發布，已自動啟用本地打包劇本。");
-                scriptData = LOCAL_SCRIPT;
-                achData = LOCAL_ACHIEVEMENTS;
-                achData.forEach(a => achMap[a.id] = a);
-            }
-
-            checkLocalStorageSaveState();
-            switchScreen('main-menu-screen');
-        }
-
-        function useLocalAchievements() {
+            scriptData = LOCAL_SCRIPT;
             achData = LOCAL_ACHIEVEMENTS;
             achData.forEach(a => achMap[a.id] = a);
-        }
-
-        function cleanGoogleJson(rawText) {
-            const startIdx = rawText.indexOf('{');
-            const endIdx = rawText.lastIndexOf('}');
-            return JSON.parse(rawText.substring(startIdx, endIdx + 1));
-        }
-
-        function parseScriptTable(rawText) {
-            const jsonObj = cleanGoogleJson(rawText);
-            const rows = jsonObj.table.rows;
-            scriptData = {};
-            rows.forEach((row, index) => {
-                if (index === 0) return; 
-                const id = row.c[0]?.v?.toString().trim();
-                if (id) {
-                    scriptData[id] = {
-                        id: id, name: row.c[1]?.v || '', text: row.c[2]?.v || '', bg: row.c[3]?.v || '',
-                        charLeft: row.c[4]?.v || '', charRight: row.c[5]?.v || '',
-                        optAText: row.c[6]?.v || '', optATarget: row.c[7]?.v?.toString().trim() || '',
-                        optBText: row.c[8]?.v || '', optBTarget: row.c[9]?.v?.toString().trim() || '',
-                        triggerAch: row.c[10]?.v?.toString().trim() || ''
-                    };
-                }
-            });
-        }
-
-        function parseAchievementTable(rawText) {
-            const jsonObj = cleanGoogleJson(rawText);
-            const rows = jsonObj.table.rows;
-            achData = []; achMap = {};
-            rows.forEach((row, index) => {
-                if (index === 0) return;
-                const achId = row.c[0]?.v?.toString().trim();
-                if (achId) {
-                    const item = { id: achId, title: row.c[1]?.v || '未知成就', desc: row.c[2]?.v || '無描述。' };
-                    achData.push(item);
-                    achMap[achId] = item; 
-                }
-            });
-            if(achData.length === 0) useLocalAchievements();
-        }
+            checkLocalStorageSaveState();
+            switchScreen('main-menu-screen');
+        });
 
         function switchScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -569,7 +498,7 @@
 
         function uiStartNewGame() {
             switchScreen('game-screen');
-            playSceneEngine('001'); 
+            playSceneEngine('001'); 
         }
 
         function uiContinueGame() {
@@ -590,7 +519,7 @@
                         <span class="ach-title">${isUnlocked ? ach.title : '【 隱藏成就 】'}</span>
                         <span class="ach-status">${isUnlocked ? '已達成' : '未解鎖'}</span>
                     </div>
-                    <div class="ach-desc">${isUnlocked ? ach.desc : '繼續推進寒煙與子默的故事以解鎖。'}</div>
+                    <div class="ach-desc">${isUnlocked ? ach.desc : '探索不同的故事分支與危機選項以解鎖。'}</div>
                 `;
                 container.appendChild(card);
             });
@@ -610,7 +539,7 @@
             document.getElementById('toast-title-text').innerText = titleText;
             document.getElementById('toast-desc-text').innerText = descText;
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 4000);
+            setTimeout(() => { toast.classList.remove('show'); }, 4500);
         }
 
         function playSceneEngine(sceneId) {
@@ -631,7 +560,11 @@
             }
 
             const stage = document.getElementById('stage-area');
-            stage.style.backgroundImage = scene.bg ? `url(${scene.bg})` : 'none';
+            if (scene.bg && scene.bg.trim() !== '') {
+                stage.style.backgroundImage = `url(${scene.bg})`;
+            } else {
+                stage.style.backgroundImage = 'none';
+            }
 
             const imgLeft = document.getElementById('char-left');
             if (scene.charLeft && scene.charLeft.trim() !== '') {
@@ -653,7 +586,7 @@
             if (scene.optBText && scene.optBText.trim() !== '') appendFullWidthOption(scene.optBText, scene.optBTarget);
 
             if (optionsBox.children.length === 0) {
-                appendFullWidthOption("返回主選單", "MENU_BACK");
+                appendFullWidthOption("返回選單", "MENU_BACK");
             }
         }
 
@@ -666,7 +599,7 @@
                 if (charIndex < textStr.length) {
                     dialogTextElement.innerText += textStr.charAt(charIndex);
                     charIndex++;
-                    typeWriterTimeout = setTimeout(step, 40); 
+                    typeWriterTimeout = setTimeout(step, 30); 
                 }
             }
             step();
